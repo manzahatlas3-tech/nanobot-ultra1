@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>System NANO ULTRA</title>
+<style>
+  body {
+    background: black;
+    color: #00ff66;
+    font-family: monospace;
+    text-align: center;
+    padding: 30px;
+    transition: background 0.2s;
+  }
+  .red { color: red; font-weight: bold; }
+  #title { font-size: 2em; margin-bottom: 20px; }
+  #countdown { font-size: 3em; margin: 20px; }
+</style>
+</head>
+<body>
+
+<div id="title">⚡ PROTOCOLLO NANO-X ULTRA ⚡</div>
+<div id="text"></div>
+<div id="countdown"></div>
+
+<script>
+const lines = [
+  "Connessione nanobot in corso...",
+  "Nanobot sperimentali: ONLINE",
+  "Analisi organismo ospite...",
+  "⚠ ATTENZIONE ⚠",
+  "Autonomia artificiale in aumento...",
+  "Errore di controllo rilevato"
+];
+
+let i = 0;
+const box = document.getElementById("text");
+const countdown = document.getElementById("countdown");
+
+function showLine() {
+  if(i < lines.length){
+    const p = document.createElement("p");
+    if(lines[i].includes("Errore")) p.classList.add("red");
+    p.innerText = "";
+    box.appendChild(p);
+    typeWriter(lines[i], p, 0, function(){
+      if(lines[i].includes("Errore")) blinkRed(6);
+      setTimeout(showLine, 1200);
+    });
+    i++;
+  } else {
+    startCountdown();
+  }
+}
+
+function typeWriter(text, element, idx, callback){
+  if(idx < text.length){
+    element.innerHTML += text.charAt(idx);
+    setTimeout(function(){ typeWriter(text, element, idx+1, callback); }, 50);
+  } else { callback(); }
+}
+
+function blinkRed(times){
+  let count = 0;
+  let interval = setInterval(function(){
+    document.body.style.background = (count % 2 === 0) ? 'red' : 'black';
+    count++;
+    if(count > times){
+      clearInterval(interval);
+      document.body.style.background = 'black';
+    }
+  }, 200);
+}
+
+function startCountdown(){
+  let sec = 5;
+  countdown.innerText = sec;
+  let timer = setInterval(function(){
+    sec--;
+    countdown.innerText = sec;
+    if(sec <= 0){
+      clearInterval(timer);
+      countdown.innerText = "";
+      box.innerHTML += "<p style='color:#00ff66;font-weight:bold;font-size:1.5em'>😂 SCHERZO 😂</p>";
+      box.innerHTML += "<p style='color:#00ff66'>Nanobot immaginari, solo fantascienza</p>";
+      box.innerHTML += "<p style='color:#00ff66'>Sistema sicuro al 100%</p>";
+    }
+  }, 1000);
+}
+
+showLine();
+</script>
+
+</body>
+</html>
